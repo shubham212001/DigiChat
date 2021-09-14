@@ -75,10 +75,11 @@
         android:id="@+id/send_button"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="130sp"
+        android:layout_marginLeft="120sp"
         android:layout_marginTop="45sp"
+        android:enabled="false"
         android:inputType="number"
-        android:text="Verify"
+        android:text="Next"
         android:textSize="18sp"
         app:backgroundTint="#8C1B1B" />
 

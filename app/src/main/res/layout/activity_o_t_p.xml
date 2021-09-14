@@ -29,9 +29,19 @@
         android:textAlignment="center"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:layout_marginTop="60sp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
+        android:layout_width="311dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="55sp"
         android:layout_weight="1"
@@ -40,7 +50,7 @@
         android:inputType="number"
         android:letterSpacing="0.8"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView7"
@@ -58,16 +68,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
-        android:layout_marginTop="60sp"
         android:layout_weight="1"
         android:text="Verify" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/resend_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
-        android:layout_marginTop="60sp"
         android:layout_weight="1"
+        android:enabled="false"
         android:text="Resend OTP" />
 </LinearLayout>

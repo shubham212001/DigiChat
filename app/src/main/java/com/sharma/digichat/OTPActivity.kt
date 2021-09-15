@@ -39,7 +39,47 @@ class OTPActivity : AppCompatActivity() {
         initialiseView()
         startVerify(received)
 
+
+        verify_button.setOnClickListener {
+            //Reference is "it"
+
+            var code =OTP_input.text.toString()
+            if(!code.isNullOrEmpty()){
+                val credential = PhoneAuthProvider.getCredential(mVerificationId!!, code)
+                verifying(credential)
+            }
+
+        }
+        resend_button.setOnClickListener {
+            initialiseView()
+            startVerify(received)
+        }
+
+
     }
+
+    private fun verifying(credential: PhoneAuthCredential) {
+        val auth =FirebaseAuth.getInstance()
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+
+
+                        val user = task.result?.user
+                        sign_in_failed_dialog()
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                            sign_in_failed_dialog()
+
+                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            show_invalid_otp_dialog()
+                        }
+                        // Update UI
+                    }
+                }
+    }
+
 
     private fun initialiseView() {
         //Creating and calling the callbacks /Methods concerned with the working of the phone authorisation
@@ -48,7 +88,7 @@ class OTPActivity : AppCompatActivity() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
-
+               //The below three lines of code is actually automatically fetching the code from the
                 val smsMessageSent = credential.smsCode
                 if (!smsMessageSent.isNullOrBlank())
                     OTP_input.setText(smsMessageSent)
@@ -58,8 +98,10 @@ class OTPActivity : AppCompatActivity() {
                 //Storing the credentials which the firebase has sent to the entered mobile number
                 //This credential bundle would be passed to the function as parameter
                 //This bundle has already being created by the onVerificationCompleted method
-                //we just need to use the paramter passed in onVerificationCompleted "credential"
-                signInWithPhoneAuthCredential(credential)
+                //we just need to use the parameter passed in onVerificationCompleted "credential"
+                //signInWithPhoneAuthCredential(credential)
+
+                 //Also move to the next activity
 
 
             }
@@ -146,13 +188,14 @@ class OTPActivity : AppCompatActivity() {
     //super.onBackPressed()
         //super.onBackPressed was commentted to not allow the user to go to the back activity
     }
+
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         val auth:FirebaseAuth= FirebaseAuth.getInstance()
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                            val user = task.result?.user
+                            //val user = task.result?.user
 
                     } else {
                         // Sign in failed, display a message and update the UI
@@ -168,7 +211,7 @@ class OTPActivity : AppCompatActivity() {
 
     private fun show_invalid_otp_dialog() {
         MaterialAlertDialogBuilder(this)
-                .setTitle("The Entered OTP is INVALID")
+                .setTitle("The Entered OTP is INVALID ,Please try again !!")
                 .setMessage("Please Enter Correct OTP to Continue")
                 .setNeutralButton("Back") { dialog, which ->
                     // Respond to neutral button press
@@ -178,9 +221,15 @@ class OTPActivity : AppCompatActivity() {
     }
     private fun sign_in_failed_dialog() {
         MaterialAlertDialogBuilder(this)
-                .setTitle("Sign In Failed")
+                .setTitle("Sign In Failed !!")
+                .setMessage("Please Try Again")
                 .show()
     }
 
+    private fun sign_in_successful_dialog() {
+        MaterialAlertDialogBuilder(this)
+                .setTitle("Phone Number Verified")
+                .show()
+    }
 
 }

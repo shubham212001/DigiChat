@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-      phone_number.addTextChangedListener{
+       phone_number.addTextChangedListener{
       if(it!!.length==10){
           send_button.isEnabled
       }

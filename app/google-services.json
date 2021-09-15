@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "385153157423",
+    "project_id": "digichat-6ba7b",
+    "storage_bucket": "digichat-6ba7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385153157423:android:b032af0023907b900839da",
+        "android_client_info": {
+          "package_name": "com.sharma.digichat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385153157423-185k8dvbsui70f9dnhuipfliohtivfql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgtgRI9qm0JzLSpUhvoLu2xXyqN9WyqD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385153157423-185k8dvbsui70f9dnhuipfliohtivfql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -40,10 +40,10 @@
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/OTP_input"
         android:layout_width="311dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="55sp"
+        android:layout_marginLeft="40sp"
         android:layout_weight="1"
         android:ems="10"
         android:hint="------"

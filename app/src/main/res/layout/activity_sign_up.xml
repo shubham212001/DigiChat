@@ -98,7 +98,7 @@
         android:layout_margin="0sp"
         android:enabled="false"
         android:inputType="text"
-        android:text="Save"
+        android:text="Next"
         android:textSize="18sp"
         app:backgroundTint="#8C1B1B" />
 

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10sp"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginRight="-8sp"
+        android:text="Profile Info"
+        android:textAlignment="center"
+        android:textColor="#53C849"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="144dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginRight="-8sp"
+        android:text="Upload Profile Picture"
+        android:textAlignment="center"
+        android:textColor="#1E477A"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="164dp" />
+
+    <ImageView
+        android:id="@+id/set_image"
+        android:layout_width="175dp"
+        android:layout_height="192dp"
+        android:layout_gravity="clip_vertical|center_horizontal|center_vertical"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="40sp"
+        android:clickable="true"
+        android:focusable="auto"
+        app:srcCompat="@drawable/profile_photo" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="clip_vertical|center_horizontal|center_vertical"
+        android:layout_marginRight="-8sp"
+        android:text="Tap image to upload"
+        android:textAlignment="center"
+        android:textColor="#2E3135"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="164dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22sp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_margin="20sp"
+            android:layout_marginTop="0sp"
+            android:layout_weight="1"
+            android:hint="Your Name"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="clip_vertical|center_horizontal|center_vertical"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="-8sp"
+        android:text="Add Name and Image to Continue"
+        android:textAlignment="center"
+        android:textColor="#ED1553"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="164dp" />
+
+    <Button
+        android:id="@+id/save_me"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100sp"
+        android:layout_marginTop="10sp"
+        android:enabled="true"
+        android:text="Next"
+        android:textSize="18sp" />
+
+</LinearLayout>

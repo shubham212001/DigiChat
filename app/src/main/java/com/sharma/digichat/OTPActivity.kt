@@ -1,5 +1,6 @@
 package com.sharma.digichat
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,10 +11,12 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_o_t_p.*
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +26,11 @@ class OTPActivity : AppCompatActivity() {
     private var phoneNumber: String? = null
     private var mVerificationId: String? = null
     private var mResendToken: PhoneAuthProvider.ForceResendingToken? = null
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
 
         val received = intent.getStringExtra("number_sending").toString()
         supportActionBar?.hide()
@@ -39,7 +46,58 @@ class OTPActivity : AppCompatActivity() {
         initialiseView()
         startVerify(received)
 
+
+        OTP_input.addTextChangedListener {
+            verify_button.isEnabled = !(it.isNullOrEmpty() || it.length < 6)
+        }
+        verify_button.setOnClickListener {
+            //Reference is "it"
+
+            var code = OTP_input.text.toString()
+            val credential = PhoneAuthProvider.getCredential(mVerificationId!!, code)
+
+            verifying(credential)
+
+
+        }
+        resend_button.setOnClickListener {
+            initialiseView()
+            startVerify(received)
+
+        }
+
+
     }
+
+    private fun verifying(credential: PhoneAuthCredential) {
+        val auth = FirebaseAuth.getInstance()
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+
+
+                        //val user = task.result?.user
+
+                        //Making an intent to start otp activity
+                        val dialog=ProgressDialog(this)
+                        dialog.setMessage("Verifying")
+                        dialog.show()
+                        val intent = Intent(this, SignUp::class.java)
+                        startActivity(intent)
+
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        sign_in_failed_dialog()
+
+                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            show_invalid_otp_dialog()
+                        }
+                        // Update UI
+                    }
+                }
+    }
+
 
     private fun initialiseView() {
         //Creating and calling the callbacks /Methods concerned with the working of the phone authorisation
@@ -48,6 +106,7 @@ class OTPActivity : AppCompatActivity() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
+                //The below three lines of code is actually automatically fetching the code from the
 
                 val smsMessageSent = credential.smsCode
                 if (!smsMessageSent.isNullOrBlank())
@@ -58,8 +117,10 @@ class OTPActivity : AppCompatActivity() {
                 //Storing the credentials which the firebase has sent to the entered mobile number
                 //This credential bundle would be passed to the function as parameter
                 //This bundle has already being created by the onVerificationCompleted method
-                //we just need to use the paramter passed in onVerificationCompleted "credential"
-                signInWithPhoneAuthCredential(credential)
+                //we just need to use the parameter passed in onVerificationCompleted "credential"
+                //signInWithPhoneAuthCredential(credential)
+
+                //Also move to the next activity
 
 
             }
@@ -96,7 +157,6 @@ class OTPActivity : AppCompatActivity() {
     }
 
 
-
     private fun startVerify(phone_number: String) {
 //Now we are calling the functions to make a send the code to the registered phone number
 
@@ -110,6 +170,7 @@ class OTPActivity : AppCompatActivity() {
 
 
     }
+
     private fun set_spannable_string(received: String) {
         //Setting the spannable string
         val ss = SpannableString("Waiting to automatically detect a OTP sent to " + received + " Wrong Number ?")
@@ -130,6 +191,7 @@ class OTPActivity : AppCompatActivity() {
         waiting.movementMethod = LinkMovementMethod.getInstance()
         waiting.text = ss
     }
+
     private fun show_countdown_timer() {
         object : CountDownTimer(30000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -142,33 +204,16 @@ class OTPActivity : AppCompatActivity() {
             }
         }.start()
     }
+
     override fun onBackPressed() {
-    //super.onBackPressed()
+        //super.onBackPressed()
         //super.onBackPressed was commentted to not allow the user to go to the back activity
     }
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        val auth:FirebaseAuth= FirebaseAuth.getInstance()
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                            val user = task.result?.user
 
-                    } else {
-                        // Sign in failed, display a message and update the UI
-
-                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                            // The verification code entered was invalid
-                            show_invalid_otp_dialog()
-                        }
-                        // Update UI
-                    }
-                }
-    }
 
     private fun show_invalid_otp_dialog() {
         MaterialAlertDialogBuilder(this)
-                .setTitle("The Entered OTP is INVALID")
+                .setTitle("Incorrect OTP")
                 .setMessage("Please Enter Correct OTP to Continue")
                 .setNeutralButton("Back") { dialog, which ->
                     // Respond to neutral button press
@@ -176,11 +221,20 @@ class OTPActivity : AppCompatActivity() {
                 }
                 .show()
     }
+
     private fun sign_in_failed_dialog() {
         MaterialAlertDialogBuilder(this)
-                .setTitle("Sign In Failed")
+                .setTitle("Sign In Failed !!")
+                .setMessage("Please Try Again")
                 .show()
     }
 
+    private fun sign_in_successful_dialog() {
+
+        MaterialAlertDialogBuilder(this)
+                .setTitle("Phone Number Verified")
+                .setMessage(" ")
+                .show()
+    }
 
 }

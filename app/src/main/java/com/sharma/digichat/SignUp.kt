@@ -1,7 +1,9 @@
 package com.sharma.digichat
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -37,6 +39,7 @@ class SignUp : AppCompatActivity() {
     }
     private lateinit var downloadUrl: String
 
+    //@SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 //Creating the reference of storage ,auth and database
 
@@ -47,12 +50,43 @@ class SignUp : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        name.addTextChangedListener {
-            saver.isEnabled = !(it.isNullOrEmpty() || it.length < 1)
-        }
+//        name.addTextChangedListener {
+//            save_me.isEnabled = !(it.isNullOrEmpty() || it.length < 1)
+//        }
         set_image.setOnClickListener {
             checkImagePermission()
         }
+
+        save_me.setOnClickListener {
+            //A string may be empty but its not null
+
+            val namer = name.text.toString()
+            if (!::downloadUrl.isInitialized) {
+                //toast("Photo cannot be empty")
+                Toast.makeText(applicationContext,"Add a photo",Toast.LENGTH_SHORT).show()
+            } else if (namer.isEmpty()) {
+                //toast("Name cannot be empty")
+                Toast.makeText(applicationContext,"Name cannot be empty",Toast.LENGTH_SHORT).show()
+            } else {
+                save_me.isEnabled=false
+                //save_me.isEnabled=false
+                val User = user(namer, downloadUrl, downloadUrl/*Needs to thumbnai url*/, auth.uid!!)
+                database.collection("users").document(auth.uid!!).set(User).addOnSuccessListener {
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    val dialog = ProgressDialog(this)
+                    dialog.setMessage("Uploading")
+                    dialog.show()
+
+
+                }.addOnFailureListener {
+                    save_me.isEnabled = true
+                }
+            }
+        }
+
 
 
     }
@@ -112,9 +146,9 @@ class SignUp : AppCompatActivity() {
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 downloadUrl = task.result.toString()
-                saver.isEnabled = true
+                save_me.isEnabled = true
             } else {
-                saver.isEnabled = true
+                save_me.isEnabled = true
                 // Handle failures
             }
         }.addOnFailureListener {

@@ -40,6 +40,9 @@ class SignUp : AppCompatActivity() {
     private lateinit var downloadUrl: String
 
     //@SuppressLint("ShowToast")
+    fun OnbackPressed(){
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
 //Creating the reference of storage ,auth and database
 
@@ -73,16 +76,21 @@ class SignUp : AppCompatActivity() {
                 val User = user(namer, downloadUrl, downloadUrl/*Needs to thumbnai url*/, auth.uid!!)
                 database.collection("users").document(auth.uid!!).set(User).addOnSuccessListener {
 
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
                     val dialog = ProgressDialog(this)
                     dialog.setMessage("Uploading")
                     dialog.show()
 
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+
+
 
                 }.addOnFailureListener {
+
                     save_me.isEnabled = true
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }

@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DigiChat">
+        <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".logged_in_or_not">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,12 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUp">
-
-        </activity>
+        <activity android:name=".SignUp"></activity>
         <activity
             android:name=".OTPActivity"
-            android:label="@string/title_activity_o_t_p"></activity>
+            android:label="@string/title_activity_o_t_p" />
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -42,7 +41,7 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
     </application>
 
